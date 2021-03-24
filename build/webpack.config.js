@@ -16,7 +16,7 @@ function resolvePath(dir) {
 const env = process.env.NODE_ENV || 'development';
 const target = process.env.TARGET || 'web';
 
-//https://cser.vn/app2021/
+//https://shispa.ezs.vn/app2021/
 
 module.exports = {
     mode: env,

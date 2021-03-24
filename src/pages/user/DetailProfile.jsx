@@ -252,7 +252,7 @@ export default class extends React.Component {
             <div className="line-logout"></div>
           </div>
           <div className="page-detail-profile__footer">
-            <div className="text">Cser Beauty 1.0.0</div>
+            <div className="text">Shi Spa 1.0.0</div>
             <button
               type="button"
               className="btn-signout"
