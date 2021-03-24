@@ -1,0 +1,115 @@
+.page-login {
+    height: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+    background: $white;
+    position: relative;
+    @include flexbox();
+    @include flex-direction(column);
+    @include justify-content(space-between);
+    &__back {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        a {
+            width: 45px;
+            height: 45px;
+            @include flexbox;
+            @include align-items(center);
+            @include justify-content(center);
+            i {
+                font-size: 20px;
+                color: $color-app;
+            }
+        }
+    }
+    &__logo {
+        @include flexbox;
+        @include align-items(center);
+        @include justify-content(center);
+        margin: 50px 0;
+        @media (max-width: 320px) {
+            margin: 30px 0;
+        }
+        img {
+            width: 200px;
+            @media (max-width: 320px) {
+                width: 150px;
+            }
+            &.logo-reg {
+                width: 180px;
+                @media (max-width: 320px) {
+                    width: 150px;
+                }
+            }
+        }
+    }
+    &__title {
+        font-size: 15px;
+        font-weight: 500;
+    }
+    &__form {
+        padding: 0 12px;
+        @media (max-width: 320px) {
+            padding: 0 5px;
+        }
+        &-item {
+            margin-top: 15px;
+            input {
+                width: 100%;
+                -webkit-box-shadow: 0px 0px 25px 0px rgba(126, 55, 216, 0.05);
+                box-shadow: 0px 0px 25px 0px rgba(126, 55, 216, 0.05);
+                padding: 12px;
+                font-size: 15px;
+                border-radius: .125rem;
+                @include transition(all .2s ease);
+                border: 1px solid transparent;
+                font-family: $font-app;
+                box-sizing: border-box;
+                &:disabled {
+                    background: #fbfbfb;
+                    color: $color-price-app;
+                }
+                &:focus,
+                &:active {
+                    box-shadow: 0px 20px 25px 0px rgba(126, 55, 216, 0.05);
+                    -webkit-box-shadow: 0px 0px 25px 0px rgba(126, 55, 216, 0.05);
+                    border: 1px solid #ececec;
+                }
+            }
+            label {
+                margin-bottom: 6px;
+                display: inline-block;
+                color: #333333;
+                font-size: 14px;
+            }
+        }
+    }
+    &__alert {
+        position: relative;
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 15px;
+        a {
+            padding-left: 5px;
+        }
+    }
+}
+
+.btn-login {
+    height: 42px;
+    border: 0;
+    background: $color-app;
+    border-radius: .125rem;
+    color: $white;
+    -webkit-box-shadow: 0px 0px 25px 0px rgba(126, 55, 216, 0.05);
+    box-shadow: 0px 0px 25px 0px rgba(126, 55, 216, 0.05);
+    text-transform: uppercase;
+    outline: none;
+    background-image: -webkit-gradient(linear, left top, right bottom, from(#ebd480), to(#d5bb67));
+    background-image: linear-gradient(to bottom right, #e7ce79, #bd9e4a);
+    -webkit-box-shadow: 2px 12px 26px 3px rgba(185, 151, 71, 0.29);
+    box-shadow: 2px 6px 29px 0px rgba(185, 151, 71, 0.29);
+}

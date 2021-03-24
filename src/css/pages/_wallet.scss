@@ -1,0 +1,158 @@
+.wallet {
+    &-bg {
+        height: 220px;
+        &:before {
+            height: 100%;
+            background-image: linear-gradient(to top right, #b99746, #eac46a);
+        }
+    }
+    &-total {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        @include flexbox();
+        @include align-items(center);
+        @include justify-content(center);
+        @include flex-direction(column);
+        color: $white;
+        .number {
+            font-weight: 500;
+            font-size: 34px;
+            font-family: $font-app;
+        }
+    }
+    &-detail {
+        padding: 0 15px;
+        position: relative;
+        z-index: 5;
+        margin-top: -40px;
+        &__wrap {
+            position: relative;
+            &:before {
+                content: "";
+                width: 85%;
+                background: #ffffff;
+                box-shadow: 0 3px 20px rgba(0, 0, 0, .04);
+                height: 100%;
+                margin-top: .75rem;
+                position: absolute;
+                border-radius: .375rem;
+                margin-left: auto;
+                margin-right: auto;
+                right: 0;
+                left: 0;
+            }
+        }
+        &__box {
+            position: relative;
+            background: $white;
+            box-shadow: 0 3px 20px rgba(0, 0, 0, .04);
+            border-radius: 4px;
+            padding: 15px;
+            .row {
+                >div {
+                    &:first-child {
+                        border-right: 1px solid #f1eef0;
+                    }
+                }
+            }
+            &-item {
+                @include flexbox();
+                @include flex-direction(column);
+                @include align-items(center);
+                .number {
+                    color: #474444;
+                    font-family: $font-app;
+                    font-weight: 700;
+                    font-size: 18px;
+                    display: block;
+                    margin-bottom: 5px;
+                }
+                .text {
+                    color: #929292;
+                    font-weight: 500;
+                    font-size: 13px;
+                }
+            }
+        }
+    }
+    &-history {
+        padding: 15px;
+        height: calc(100% - 265px);
+        overflow-y: scroll;
+        box-sizing: border-box;
+        h5 {
+            font-weight: 500;
+            color: #686766;
+            font-size: 14px;
+        }
+        &__list {
+            ul {
+                padding-left: 30px;
+                position: relative;
+                &:before {
+                    content: "";
+                    height: 100%;
+                    width: 1px;
+                    border-left: 1px dashed #cccbcd;
+                    position: absolute;
+                    left: 10px;
+                }
+                li {
+                    position: relative;
+                    margin-bottom: 30px;
+                    &:last-child {
+                        margin: 0;
+                    }
+                    &:before {
+                        content: "";
+                        content: "";
+                        width: 10px;
+                        height: 10px;
+                        position: absolute;
+                        border-radius: 100%;
+                        left: -24px;
+                        top: 0;
+                    }
+                    &.add {
+                        &:before {
+                            background: $color-success;
+                        }
+                    }
+                    &.down {
+                        &:before {
+                            background: $color-danger;
+                        }
+                    }
+                    .price {
+                        position: relative;
+                        padding-top: 20px;
+                        &-number {
+                            color: #464343;
+                            font-size: 18px;
+                            font-family: $font-app;
+                            font-weight: 700;
+                            position: absolute;
+                            top: -8px;
+                        }
+                        &-time {
+                            color: #a3a1a0;
+                        }
+                    }
+                    .note {
+                        position: absolute;
+                        right: 0;
+                        bottom: 0;
+                        width: 50%;
+                        text-align: right;
+                        color: #717070;
+                        font-size: 15px;
+                        @include cut-text();
+                    }
+                }
+            }
+        }
+    }
+}

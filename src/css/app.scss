@@ -1,0 +1,176 @@
+/* Your app custom styles here */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&family=Barlow:wght@200;300;400;500;600;700&family=Archivo+Narrow:wght@400;500;600;700&family=Roboto:wght@100;300;400;500;700&family=Mulish:wght@200;300;400;500;600;700;800;900&display=swap');
+////////// abstracts
+@import './abstracts/variables';
+@import './../css/abstracts/mixins';
+////////// base
+@import './base/reset';
+////////// layout
+@import './../css/layout/iconanimation';
+@import './../css/layout/button';
+@import './../css/layout/navbar';
+@import './../css/layout/toolbar';
+@import './../css/layout/toolbarCustom';
+@import './../css/layout/toolbarBottom';
+@import './../css/layout/modal.scss';
+////////// pages
+//home
+@import './../css/pages/home/index.scss';
+@import './../css/pages/nodata.scss';
+@import './../css/pages/news.scss';
+@import './../css/pages/shop.scss';
+@import './../css/pages/maps.scss';
+@import './../css/pages/login.scss';
+@import './../css/pages/profile.scss';
+@import './../css/pages/cardservice.scss';
+@import './../css/pages/barcode.scss';
+@import './../css/pages/stock.scss';
+@import './../css/pages/schedule.scss';
+@import './../css/pages/voucher.scss';
+@import './../css/pages/wallet.scss';
+@import './../css/pages/diary.scss';
+@import './../css/pages/rating.scss';
+@import './../css/pages/notification.scss';
+@import './../css/pages/order.scss';
+@import './../css/pages/pay.scss';
+//Font family
+body,
+html {
+    font-family: $font-app4 !important;
+}
+
+.p-0 {
+    padding: 0 !important;
+}
+
+.no-bg {
+    background: transparent !important;
+}
+
+//Reset Framework7
+.page-content {
+    background: $color-gray-bg;
+}
+
+.toolbar {
+    padding: 0;
+    background: $white;
+    box-shadow: $shadow-box-top;
+    &-inner {
+        padding: 0;
+    }
+    &:before {
+        height: 0;
+    }
+}
+
+.ios-translucent-bars .toolbar {
+    background: $white;
+    box-shadow: $shadow-menu;
+}
+
+.ios-translucent-bars .photo-browser-page-dark .toolbar {
+    background: var(--f7-photobrowser-dark-bars-bg-color);
+}
+
+.navbar {
+    &-bg {
+        background: $color-app;
+        border-bottom: solid 2px rgba(255, 255, 255, 0.3);
+        &:after {
+            background-color: transparent;
+        }
+    }
+    &:not(.navbar-photo-browser.navbar-photo-browser-dark) {
+        .navbar-inner {
+            padding: 0;
+        }
+    }
+}
+
+.navbars .navbar.navbar-current {
+    z-index: 10;
+}
+
+.navbars .navbar.navbar-previous .page-navbar__back a.link {
+    opacity: 0;
+}
+
+.ios-translucent-bars .navbar-bg {
+    background-color: $color-app;
+}
+
+.searchbar-product {
+    background: var(--f7-navbar-bg-color) !important;
+    background-image: var(--f7-navbar-bg-image, var(--f7-bars-bg-image))!important;
+    background-color: var(--f7-navbar-bg-color, var(--f7-bars-bg-color))!important;
+}
+
+.toolbar .toolbar-inner {
+    overflow: inherit;
+}
+
+//Slick
+.slick-slide {
+    height: auto !important;
+}
+
+//rootnotify reset
+.Toastify__close-button {
+    width: auto!important;
+}
+
+.Toastify__toast-container {
+    z-index: 1000000009;
+}
+
+//Component
+.page-render {
+    padding: $pd-app;
+}
+
+.text-empty {
+    padding: 15px;
+}
+
+// badges
+.badges {
+    padding-right: .6em;
+    padding-left: .6em;
+    border-radius: 10rem;
+    padding: .25em .4em;
+    font-size: 75%;
+    font-weight: 500;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    display: inline-block;
+}
+
+.badges-danger {
+    color: #fff;
+    background-color: #f54242;
+}
+
+///datepicker mobile
+.datepicker {
+    font-family: $font-app !important;
+    -webkit-animation-duration: .3s;
+    animation-duration: .3s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: fadeInUp;
+    animation-name: fadeInUp;
+}
+
+.datepicker-modal {
+    z-index: 10001 !important;
+    -webkit-animation-duration: .5s;
+    animation-duration: .5s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
+}

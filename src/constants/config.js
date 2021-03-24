@@ -1,0 +1,1 @@
+export const SERVER_APP = "https://shispa.ezs.vn"
