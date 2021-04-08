@@ -1,8 +1,8 @@
 import http from "../service/http-common";
 
 class MapsDataService {
-    getAll() {
-        return http.get("/app/index.aspx?cmd=StockInfo");
+    getAll(id) {
+        return http.get(`/api/gl/select2?cmd=art&includeSource=1&channels=${id}`)
     }
 }
 

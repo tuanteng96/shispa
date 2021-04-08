@@ -11,7 +11,7 @@ class NewsDataService {
         return http.get(`/tutorials/${id}`);
     }
     getNewsIdCate(id) {
-        return http.get(`api/gl/select2?cmd=art&includeSource=1&channels=${id}`)
+        return http.get(`/api/gl/select2?cmd=art&includeSource=1&channels=${id}`)
     }
     getDetailNew(id) {
         return http.get(`/api/v3/article?cmd=get&ids=${id}`);

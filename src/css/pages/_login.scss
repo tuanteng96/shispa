@@ -67,8 +67,9 @@
                 border: 1px solid transparent;
                 font-family: $font-app;
                 box-sizing: border-box;
+                background: $white;
                 &:disabled {
-                    background: #fbfbfb;
+                    background: #f0f4f7;
                     color: $color-price-app;
                 }
                 &:focus,
@@ -96,20 +97,4 @@
             padding-left: 5px;
         }
     }
-}
-
-.btn-login {
-    height: 42px;
-    border: 0;
-    background: $color-app;
-    border-radius: .125rem;
-    color: $white;
-    -webkit-box-shadow: 0px 0px 25px 0px rgba(126, 55, 216, 0.05);
-    box-shadow: 0px 0px 25px 0px rgba(126, 55, 216, 0.05);
-    text-transform: uppercase;
-    outline: none;
-    background-image: -webkit-gradient(linear, left top, right bottom, from(#ebd480), to( #e1b73f));
-    background-image: linear-gradient(to bottom right, #e7ce79, #e1b73f);
-    -webkit-box-shadow: 2px 12px 26px 3px rgba(185, 151, 71, 0.29);
-    box-shadow: 2px 6px 29px 0px rgba(185, 151, 71, 0.29);
 }

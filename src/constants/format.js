@@ -81,7 +81,7 @@ export const checkImageProduct = (src) => {
     }
     //Check avatar Null
 export const checkAvt = (src) => {
-    if (src === "null.gif" || src === "") {
+    if (src === "null.gif" || src === "" || src === undefined) {
         return imgAvatarNull
     } else {
         return SERVER_APP + "/Upload/image/" + src;

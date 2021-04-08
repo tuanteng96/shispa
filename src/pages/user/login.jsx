@@ -51,7 +51,7 @@ export default class extends React.Component {
           setSubscribe(userData, password);
           setTimeout(() => {
             self.$f7.preloader.hide();
-            this.$f7router.navigate('/');
+            this.$f7router.navigate("/", { reloadCurrent: true });
           }, 1000);
         }
       })

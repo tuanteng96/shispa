@@ -3,7 +3,9 @@ import UserService from "../service/user.service";
 export const setSubscribe = (userData, PWD) => {
     if (!userData) return false;
 
-    const USN = userData.MobilePhone;
+    const USN = userData.MobilePhone ?
+        userData.MobilePhone :
+        userData.UserName;
     const IsUser = userData.acc_type === "M" ? 0 : 1
         // if (IsUser) {
         //     const StockID = userData.ByStockID;

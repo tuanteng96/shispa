@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import bgHeaderTop from "../../assets/images/bg-header-home.png";
-import { Page, Link, Toolbar} from "framework7-react";
+import { Page, Link, Toolbar, f7} from "framework7-react";
 import UserService from "../../service/user.service";
 import IconSearch from "../../assets/images/icon-search.png";
 import { FaRegUser, FaMapMarkerAlt, FaChevronDown } from "react-icons/fa";
@@ -22,6 +22,7 @@ import SlideList from "../home/components/BannerSlide/SlideList";
 import ListImage from "../home/components/Customer/ListImage";
 import ProductList from "../home/components/Product/ProductList";
 import NewsList from "../home/components/news/NewsList";
+import QuickAction from "../../components/quickAction";
 
 export default class extends React.Component {
   constructor() {
@@ -106,6 +107,10 @@ export default class extends React.Component {
     });
   };
 
+  searchPage = () => {
+    this.$f7router.navigate("/search/");
+  }
+
   render() {
     const { isOpenStock, stockName } = this.state;
 
@@ -149,6 +154,7 @@ export default class extends React.Component {
                     <input
                       type="text"
                       placeholder="Bạn tìm gì hôm nay ?"
+                      onFocus={this.searchPage}
                     ></input>
                   </div>
                   <SlideList />
@@ -193,6 +199,7 @@ export default class extends React.Component {
             nameStock={(name) => this.nameStock(name)}
           />
           <ModalReviews />
+          <QuickAction />
         </Suspense>
       </Page>
     );

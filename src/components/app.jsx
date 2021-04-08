@@ -30,6 +30,7 @@ import {
 import UserService from "../service/user.service";
 
 import routes from "../js/routes";
+import { NAME_APP } from "../constants/config";
 
 export default class extends React.Component {
   constructor() {
@@ -38,37 +39,37 @@ export default class extends React.Component {
     this.state = {
       // Framework7 Parameters
       f7params: {
-        name: "Shi Spa", // App name
+        name: NAME_APP, // App name
         theme: "auto", // Automatic theme detection
-        id: "vn.shipsa",
+        id: "vn.cser",
         // App routes
         routes: routes,
         on: {
           init: function () {
             const infoUser = getUser();
             if (infoUser) {
+              const username = infoUser.MobilePhone
+                ? infoUser.MobilePhone
+                : infoUser.UserName;
               const pwd = getPassword();
-              UserService.getInfo(infoUser.MobilePhone, pwd)
-                .then((response) => {
-                  if (response.data.error === "REQUIRE_LOGIN") {
-                    removeUserStorage();
-                  }
-                  else {
-                    const data = response.data.info;
-                    setUserStorage(data.etoken, data, pwd);
-                  }
+              UserService.getInfo(username, pwd).then((response) => {
+                if (response.data.error) {
+                  removeUserStorage();
+                } else {
+                  const data = response.data;
+                  setUserStorage(data.etoken, data, pwd);
                 }
-              );
+              });
             }
-            console.log("Lần đầu mở App");
+            //console.log("Lần đầu mở App");
           },
           pageInit: function () {
-            console.log("Khi quay lại");
+            //console.log("Khi quay lại");
           },
         },
         view: {
           routesBeforeEnter: function (to, from, resolve, reject) {
-            console.log("All Page resolve + App.jsx");
+            //console.log("All Page resolve + App.jsx");
             resolve();
           },
         },

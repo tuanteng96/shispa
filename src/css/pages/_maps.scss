@@ -46,6 +46,13 @@
         &-item {
             outline: none;
             padding: 14px;
+            &.active {
+                .star {
+                    i.la-location-arrow {
+                        color: $color-price-app;
+                    }
+                }
+            }
             .star {
                 position: relative;
                 i {
@@ -98,6 +105,13 @@
                         i {
                             font-size: 16px;
                             margin-right: 8px;
+                        }
+                    }
+                    &.address {
+                        @include flexbox();
+                        //@include align-items(center);
+                        p {
+                            margin: 0;
                         }
                     }
                 }

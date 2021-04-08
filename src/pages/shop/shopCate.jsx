@@ -19,12 +19,12 @@ export default class extends React.Component {
       const cateID = this.$f7route.params.cateId;
       const stockid = getStockIDStorage();
       stockid ? stockid : 0;
-      console.log(stockid);
       ShopDataService.getCate(cateID, stockid)
         .then((response) => {
           const arrCate = response.data;
+          const arrCateNew = arrCate.filter((item) => item.IsPublic !== 0);
           this.setState({
-            arrCate: arrCate,
+            arrCate: arrCateNew,
           });
         })
         .catch((e) => {
@@ -40,7 +40,7 @@ export default class extends React.Component {
     }
   };
   render() {
-    const arrCate = this.state.arrCate;
+    const { arrCate } = this.state;
     return (
       <Page name="shop-cate">
         <Navbar>

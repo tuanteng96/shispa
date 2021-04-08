@@ -1,7 +1,8 @@
 import React from "react";
-import { Page, Link, Navbar } from "framework7-react";
-import bgImage from '../../assets/images/headerbottombgapp.png';
+import { Page, Link, Navbar, Toolbar } from "framework7-react";
+import bgImage from '../../assets/images/headerbottomemail.png';
 import IconChangeEmail from "../../assets/images/icon-change-email.svg";
+import ToolBarBottom from "../../components/ToolBarBottom";
 import { getUser, getPassword } from "../../constants/user";
 import { validateEmail } from "../../constants/format";
 import UserService from "../../service/user.service";
@@ -100,71 +101,73 @@ export default class extends React.Component {
     render() {
         const memberInfo = this.state.memberInfo;
         return (
-            <Page name="edit-email" noToolbar noNavbar>
-                <div className="profile-bg">
-                    <div className="page-login__back">
-                        <Link onClick={() => this.$f7router.back()}>
-                            <i className="las la-arrow-left"></i>
-                        </Link>
-                    </div>
-                    <div className="name">
-                        Thay đổi Email
-                    </div>
-                    <img src={bgImage} />
+          <Page name="edit-email" noToolbar noNavbar>
+            <div className="profile-bg">
+              <div className="page-login__back">
+                <Link onClick={() => this.$f7router.back()}>
+                  <i className="las la-arrow-left"></i>
+                </Link>
+              </div>
+              <div className="name">Thay đổi Email</div>
+              <img src={bgImage} />
+            </div>
+            <div className="profile-info">
+              <div className="profile-info__avatar">
+                <img src={IconChangeEmail} />
+              </div>
+            </div>
+            <div className="edit-email__box">
+              <form>
+                <div className="note">
+                  Bạn muốn thay đổi Email hiện tại. Vui lòng cập nhập đầy đủ
+                  thông tin dưới đây.
                 </div>
-                <div className="profile-info">
-                    <div className="profile-info__avatar">
-                        <img src={IconChangeEmail} />
-                    </div>
+                <div className="page-login__form-item">
+                  <label>Email hiện tại</label>
+                  <input
+                    value={(memberInfo && memberInfo.Email) || "Chưa có Email"}
+                    type="text"
+                    autoComplete="off"
+                    disabled
+                  />
                 </div>
-                <div className="edit-email__box">
-                    <form>
-                        <div className="note">
-                            Bạn muốn thay đổi Email hiện tại. Vui lòng cập nhập đầy đủ thông tin dưới đây.
-                    </div>
-                        <div className="page-login__form-item">
-                            <label>Email hiện tại</label>
-                            <input
-                                value={memberInfo && memberInfo.Email || ""}
-                                type="text"
-                                autoComplete="off"
-                                disabled
-                            />
-                        </div>
-                        <div className="page-login__form-item">
-                            <label>Email mới</label>
-                            <input
-                                type="text"
-                                name="email"
-                                value={this.state.email || ""}
-                                autoComplete="off"
-                                onChange={this.handleChangeInput}
-                                placeholder="Nhập Email mới"
-                            />
-                        </div>
-                        <div className="page-login__form-item">
-                            <label>Mật khẩu</label>
-                            <input
-                                type="password"
-                                name="password"
-                                autoComplete="off"
-                                value={this.state.password || ""}
-                                onChange={this.handleChangeInput}
-                                placeholder="Mật khẩu"
-                            />
-                        </div>
-                        <div className="page-login__form-item">
-                            <button
-                                type="button"
-                                className="btn-login btn-me btn-no-image"
-                                onClick={() => this.saveEmail()}
-                            >
-                                <span>Lưu thay đổi</span>
-                            </button>
-                        </div>
-                    </form>
+                <div className="page-login__form-item">
+                  <label>Email mới</label>
+                  <input
+                    type="text"
+                    name="email"
+                    value={this.state.email || ""}
+                    autoComplete="off"
+                    onChange={this.handleChangeInput}
+                    placeholder="Nhập Email mới"
+                  />
                 </div>
-            </Page>
-        )
+                <div className="page-login__form-item">
+                  <label>Mật khẩu</label>
+                  <input
+                    type="password"
+                    name="password"
+                    autoComplete="off"
+                    value={this.state.password || ""}
+                    onChange={this.handleChangeInput}
+                    placeholder="Mật khẩu"
+                  />
+                </div>
+                <div className="page-login__form-item">
+                  <button
+                    type="button"
+                    className="btn-login btn-me btn-no-image"
+                    onClick={() => this.saveEmail()}
+                  >
+                    <span>Lưu thay đổi</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+            {/* <Toolbar tabbar position="bottom">
+              <ToolBarBottom />
+            </Toolbar> */}
+          </Page>
+        );
     }
 }

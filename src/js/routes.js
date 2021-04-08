@@ -32,12 +32,22 @@ import OrderPage from '../pages/user/userOrder';
 import EditEmailPage from '../pages/user/editEmail';
 import EditPasswordPage from '../pages/user/editPassword';
 
-import DynamicRoutePage from '../pages/dynamic-route.jsx';
+//Employee - Nhân viên
+
+import EmployeeServicePage from "../pages/employee/timeKeeping/employeeService";
+import EmployeeServiceDetailPage from "../pages/employee/timeKeeping/employeeServiceDetail";
+import EmployeeServiceDiaryPage from "../pages/employee/timeKeeping/employeeServiceDiary";
+import EmployeeServiceSchedulePage from "../pages/employee/timeKeeping/employeeServiceSchedule";
+import EmployeeStatisticalPage from "../pages/employee/statistical/employeeStatistical";
+import EmployeeReportPage from "../pages/employee/report/employeeReport";
+
+import SearchPage from "../pages/search/index";
 import NotFoundPage from '../pages/404.jsx';
+import { getUser } from "../constants/user";
 
 function checkAuth(to, from, resolve, reject) {
     var router = this;
-    if (localStorage.getItem("user")) {
+    if (getUser()) {
         resolve();
     } else {
         reject();
@@ -45,28 +55,54 @@ function checkAuth(to, from, resolve, reject) {
     }
 }
 
+const checkRouterHome = () => {
+
+    const infoUser = getUser();
+
+    const ACC_TYPE = infoUser && infoUser.acc_type;
+    if (ACC_TYPE === "M") {
+        return HomeIndex;
+    }
+
+    if (ACC_TYPE === "U") {
+        if (infoUser.ID === 1) {
+            return EmployeeReportPage;
+        } else {
+            const groupRole = infoUser.GroupTitles;
+            if (groupRole.includes("service")) {
+                return EmployeeServicePage;
+            } else if (groupRole.includes("director")) {
+                return EmployeeReportPage;
+            } else {
+                return EmployeeStatisticalPage;
+            }
+        }
+    }
+    return HomeIndex;
+}
+
 var routes = [{
         path: '/',
-        component: HomeIndex
+        asyncComponent: () => checkRouterHome(),
     },
     {
         path: '/news/',
-        component: HomeIndex,
+        asyncComponent: () => HomeIndex,
         options: {
             transition: 'f7-cover',
         }
     },
     {
         path: '/news-list/',
-        component: NewsListPage,
+        asyncComponent: () => NewsListPage,
     },
     {
         path: '/news/detail/:postId/',
-        component: NewsDetailPage,
+        asyncComponent: () => NewsDetailPage,
     },
     {
         path: '/shop/',
-        component: ShopPage,
+        asyncComponent: () => ShopPage,
         options: {
             transition: 'f7-cover',
         }
@@ -78,7 +114,7 @@ var routes = [{
     },
     {
         path: '/pay-info/',
-        component: ShopPayInfoPage
+        asyncComponent: () => ShopPayInfoPage
     },
     {
         path: '/pay-success/:orderID',
@@ -119,106 +155,152 @@ var routes = [{
     {
         path: '/shop/detail/:cateId',
         async(routeTo, routeFrom, resolve, reject) {},
-        component: ShopDetailPage,
+        asyncComponent: () => ShopDetailPage,
     },
     {
         path: '/maps/',
-        component: MapsPage,
+        asyncComponent: () => MapsPage,
         options: {
             transition: 'f7-cover',
         }
     },
     {
         path: '/login/',
-        component: LoginPage,
+        asyncComponent: () => LoginPage,
         options: {
             transition: 'f7-cover',
         }
     },
     {
         path: '/registration/',
-        component: RegistrationPage,
+        asyncComponent: () => RegistrationPage,
         options: {
             transition: 'f7-cover-v',
         }
     },
     {
         path: '/profile/',
-        component: ProfilePage,
+        asyncComponent: () => ProfilePage,
         options: {
             transition: 'f7-cover',
         }
     },
     {
         path: '/detail-profile/',
-        component: DetailProfilePage,
+        asyncComponent: () => DetailProfilePage,
         options: {
             transition: 'f7-cover',
         }
     },
     {
         path: '/edit-email/',
-        component: EditEmailPage
+        asyncComponent: () => EditEmailPage
     },
     {
         path: '/edit-password/',
-        component: EditPasswordPage
+        asyncComponent: () => EditPasswordPage
     },
     {
         path: '/cardservice/', // Thẻ dịch vụ
-        component: CardServicePage,
+        asyncComponent: () => CardServicePage,
         options: {
             transition: 'f7-cover',
         }
     },
     {
         path: '/schedule/', // Thẻ dịch vụ
-        component: SchedulePage,
+        asyncComponent: () => SchedulePage,
         options: {
             transition: 'f7-cover',
         }
     },
     {
         path: '/manage-schedules/', // Quản lý Thẻ dịch vụ
-        component: ScheduleManagePage,
+        asyncComponent: () => ScheduleManagePage,
         options: {
             transition: 'f7-cover',
         }
     },
     {
         path: '/barcode/', // Check In
-        component: BarCodePage,
+        asyncComponent: () => BarCodePage,
         options: {
             transition: 'f7-cover',
         }
     },
     {
         path: '/order/', // Check In
-        component: OrderPage,
+        asyncComponent: () => OrderPage,
         options: {
             transition: 'f7-cover',
         }
     },
     {
         path: '/voucher/', // Mã giảm giá
-        component: VoucherPage
+        asyncComponent: () => VoucherPage
     },
     {
         path: '/wallet/', // Ví điện tử
-        component: WalletPage
+        asyncComponent: () => WalletPage
     },
     {
         path: '/diary/', // Nhật ký
-        component: DiaryPage
+        asyncComponent: () => DiaryPage
     },
     {
         path: '/rating/', // Nhật ký
-        component: RatingListPage
+        asyncComponent: () => RatingListPage
     },
     {
         path: '/notification/', // Thông báo Noti
-        component: NotificationPage,
+        asyncComponent: () => NotificationPage,
         beforeEnter: checkAuth
+    },
+    {
+        path: '/employee/service/', // Nhân viên dịch vụ
+        asyncComponent: () => EmployeeServicePage,
+        options: {
+            transition: 'f7-cover',
+        }
+    },
+    {
+        path: '/employee/service/:id/', // Nhân viên dịch vụ chi tiết
+        asyncComponent: () => EmployeeServiceDetailPage,
+        options: {
+            transition: 'f7-cover',
+        }
+    },
+    {
+        path: '/employee/diary/:id/', // Nhân viên nhật ký
+        asyncComponent: () => EmployeeServiceDiaryPage,
+        options: {
+            transition: 'f7-cover',
+        }
+    },
+    {
+        path: '/employee/schedule/:orderItem/', // Nhân viên lịch trình
+        asyncComponent: () => EmployeeServiceSchedulePage,
+        options: {
+            transition: 'f7-cover',
+        }
+    },
+    {
+        path: '/employee/statistical/', // Thống kê
+        asyncComponent: () => EmployeeStatisticalPage,
+        options: {
+            transition: 'f7-cover',
+        }
+    },
+    {
+        path: '/employee/report/', // Thống kê
+        asyncComponent: () => EmployeeReportPage,
+        options: {
+            transition: 'f7-cover',
+        }
+    },
+    {
+        path: '/search/', // Thống kê
+        asyncComponent: () => SearchPage,
     },
     {
         path: '(.*)',

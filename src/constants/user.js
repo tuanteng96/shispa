@@ -77,11 +77,58 @@ export const subscribe = (rt) => {
 }
 
 export const app_request = (cmd, value) => {
-    if (window['ANDROID'])
-        ANDROID.Do(cmd, value);
-    else
-        window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.IOS.postMessage({
-            "cmd": cmd,
-            "value": value
-        })
+        if (window['ANDROID']) {
+            ANDROID.Do(cmd, value);
+        } else {
+            window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.IOS.postMessage({
+                "cmd": cmd,
+                "value": value
+            })
+        }
+    }
+    // return the search data from the storage
+export const getKeySearch = () => {
+        const dataKey = localStorage.getItem('keysearch');
+        if (dataKey) return JSON.parse(dataKey);
+        else return null;
+    }
+    // set the token and user from the storage
+export const setKeySearch = (key) => {
+    const dataKey = localStorage.getItem('keysearch');
+    let arrSearch = [];
+    if (dataKey) {
+        arrSearch = JSON.parse(dataKey).filter(item => item !== key);
+        arrSearch.unshift(key);
+    } else {
+        arrSearch.push(key);
+    }
+    localStorage.setItem('keysearch', JSON.stringify(arrSearch));
+}
+export const removeKeySearch = (key) => {
+    const dataKey = localStorage.getItem('keysearch');
+    let arrSearch = JSON.parse(dataKey).filter(item => item !== key);
+    localStorage.setItem('keysearch', JSON.stringify(arrSearch));
+}
+export const getViewed = () => {
+    const dataViewted = localStorage.getItem('viewed');
+    if (dataViewted) return JSON.parse(dataViewted);
+    else return null;
+}
+export const setViewed = (item) => {
+    const dataViewted = localStorage.getItem('viewed');
+    let arrViewted = [];
+    if (dataViewted) {
+        const ID = item.ID;
+        arrViewted = JSON.parse(dataViewted).filter(item => item.ID !== ID);
+        arrViewted.unshift(item);
+    } else {
+        arrViewted.push(item);
+    }
+    localStorage.setItem('viewed', JSON.stringify(arrViewted));
+}
+export const removeViewed = (item) => {
+    const dataViewted = localStorage.getItem('viewed');
+    const ID = item.ID;
+    let arrViewted = JSON.parse(dataViewted).filter(item => item.ID !== ID);
+    localStorage.setItem('viewed', JSON.stringify(arrViewted));
 }

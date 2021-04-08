@@ -5,7 +5,7 @@ import {
   checkSale,
   percentagesSale,
 } from "../../constants/format";
-import { getUser } from "../../constants/user";
+import { getUser, setViewed } from "../../constants/user";
 import ShopDataService from "./../../service/shop.service";
 import CartToolBar from "../../components/CartToolBar";
 import {
@@ -62,6 +62,8 @@ export default class extends React.Component {
           arrOptions: resultRes.options,
           statusLoading: false
         });
+
+        setViewed(resultRes.product);
       })
       .catch((e) => {
         console.log(e);

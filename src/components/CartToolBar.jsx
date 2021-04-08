@@ -16,7 +16,7 @@ export default class CartToolBar extends React.Component {
   }
   getOrder = () => {
     const infoUser = getUser();
-    if (!infoUser) {
+    if (!infoUser || infoUser.acc_type !== "M") {
       return false;
     }
 

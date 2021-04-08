@@ -17,6 +17,7 @@
 ////////// pages
 //home
 @import './../css/pages/home/index.scss';
+@import './../css/pages/employee/index.scss';
 @import './../css/pages/nodata.scss';
 @import './../css/pages/news.scss';
 @import './../css/pages/shop.scss';
@@ -34,10 +35,12 @@
 @import './../css/pages/notification.scss';
 @import './../css/pages/order.scss';
 @import './../css/pages/pay.scss';
+@import './../css/pages/search/index.scss';
+@import './../css/pages/quickaction/index';
 //Font family
 body,
 html {
-    font-family: $font-app4 !important;
+    font-family: $font-app2 !important;
 }
 
 .p-0 {
@@ -173,4 +176,18 @@ html {
     animation-fill-mode: both;
     -webkit-animation-name: fadeIn;
     animation-name: fadeIn;
+}
+
+.datepicker.ios .datepicker-header {
+    height: 40px;
+    line-height: 40px;
+    font-size: 18px;
+}
+
+.ios .with-photo-browser-page .icon-back:after {
+    font-size: 14px;
+}
+
+.ios .with-photo-browser-page .back span {
+    font-size: 16px;
 }

@@ -34,6 +34,9 @@ class ShopDataService {
     getUpdateOrder(data) {
         return http.post(`/api/v3/orderclient?cmd=get`, data);
     }
+    searchProd(data) {
+        return http.get(`/app/index.aspx?cmd=search_prods&key=${data.key}&cates=&pi=1&ps=${data.count}&tags=&stockid=${data.stockid}`);
+    }
 }
 
 export default new ShopDataService();

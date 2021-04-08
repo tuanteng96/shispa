@@ -5,6 +5,7 @@ import { getStockIDStorage, getStockNameStorage } from "../../constants/user";
 import IconLocation from "../../assets/images/location1.svg";
 import SkeletonStock from "./SkeletonStock";
 import Slider from "react-slick";
+import DatePicker from "react-mobile-datepicker";
 import moment from "moment";
 import "moment/locale/vi";
 moment.locale("vi");
@@ -20,6 +21,7 @@ export default class ScheduleSpa extends React.Component {
       itemBook: {},
       isLoadingStock: true,
       isActive: 0,
+      isOpen: false,
     };
   }
 
@@ -78,7 +80,7 @@ export default class ScheduleSpa extends React.Component {
       arrListTime.push(item);
     }
 
-    for (let day = 0; day <= 2; day++) {
+    for (let day = 0; day <= 1; day++) {
       switch (day) {
         case 0:
           var todayFormat = moment(gettoday).add(day, "days").format("DD/MM");
@@ -181,6 +183,7 @@ export default class ScheduleSpa extends React.Component {
       dateSelected: value,
       timeSelected: "",
       itemBook: itemBookNew,
+      otherBook: null,
     });
     this.props.handleTime(itemBookNew);
   };
@@ -220,12 +223,14 @@ export default class ScheduleSpa extends React.Component {
       this.setState({
         timeSelected: "",
         itemBook: null,
+        otherBook: null,
       });
       this.props.handleTime({});
     } else {
       this.setState({
         timeSelected: time,
         itemBook: itemBookNew,
+        otherBook: null,
       });
       this.props.handleTime(itemBookNew);
     }
@@ -233,9 +238,61 @@ export default class ScheduleSpa extends React.Component {
 
   handleTab = (index) => {
     this.setState({
-      isActive: index
-    })
+      isActive: index,
+    });
+  };
+
+  handleShowDate = () => {
+    this.setState({
+      isOpen: true,
+      isActive: "other",
+      timeSelected: "",
+    });
   }
+
+  handleSelectDate = async (date) => {
+    const {
+      CurrentStockID,
+      CurrentStockName,
+      StockSelected,
+    } = this.state;
+
+    const itemBookNew = {};
+    itemBookNew.time = moment(date).format("LT");;
+    itemBookNew.stock = StockSelected
+      ? StockSelected
+      : parseInt(CurrentStockID);
+    itemBookNew.date = moment(date).format("L"); ;
+    itemBookNew.nameStock = CurrentStockName;
+
+    this.setState(
+      {
+        otherBook: date,
+        isActive: "other",
+      },
+      () => {
+        this.props.handleTime(itemBookNew);
+        this.handleCancelDate();
+      }
+    );
+  };
+
+  handleCancelDate = () => {
+    const { otherBook } = this.state;
+    if (otherBook) {
+      this.setState({
+        isOpen: false,
+        isActive: "other",
+      });
+    }
+    else {
+      this.setState({
+        isOpen: false,
+        isActive: 0,
+      });
+    }
+    
+  };
 
   render() {
     const {
@@ -245,8 +302,9 @@ export default class ScheduleSpa extends React.Component {
       isLoadingStock,
       CurrentStockID,
       isActive,
+      isOpen,
+      otherBook,
     } = this.state;
-
     const settings = {
       className: "slider variable-width",
       dots: false,
@@ -258,6 +316,34 @@ export default class ScheduleSpa extends React.Component {
       variableWidth: true,
       afterChange: (current) => {},
       beforeChange: (current, next) => {},
+    };
+
+    const dateConfig = {
+      hour: {
+        format: "hh",
+        caption: "Giờ",
+        step: 1,
+      },
+      minute: {
+        format: "mm",
+        caption: "Phút",
+        step: 1,
+      },
+      date: {
+        caption: "Ngày",
+        format: "D",
+        step: 1,
+      },
+      month: {
+        caption: "Tháng",
+        format: "M",
+        step: 1,
+      },
+      year: {
+        caption: "Năm",
+        format: "YYYY",
+        step: 1,
+      },
     };
     return (
       <div className="page-schedule__box">
@@ -330,6 +416,38 @@ export default class ScheduleSpa extends React.Component {
                     </Col>
                   );
                 })}
+              <Col width="33">
+                <Link
+                  noLinkClass
+                  tabLinkActive={isActive === "other" ? true : false}
+                  onClick={() => this.handleShowDate()}
+                >
+                  <span
+                    className={isActive === "other" ? "active" : ""}
+                    // is-active={isActive}
+                    // is-index={index}
+                  >
+                    {otherBook
+                      ? moment(otherBook).format("LT") +
+                        " " +
+                        moment(otherBook).format("L")
+                      : "Ngày khác"}
+                  </span>
+                </Link>
+              </Col>
+              <DatePicker
+                theme="ios"
+                cancelText="Đóng"
+                confirmText="Chọn"
+                headerFormat="hh:mm Ngày DD/MM/YYYY"
+                showCaption={true}
+                dateConfig={dateConfig}
+                value={otherBook ? new Date(otherBook) : new Date()}
+                isOpen={isOpen}
+                onSelect={this.handleSelectDate}
+                onCancel={this.handleCancelDate}
+                min={new Date()}
+              />
             </Row>
           </div>
           <div className="page-schedule__note">

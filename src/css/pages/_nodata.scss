@@ -2,7 +2,6 @@
     @include flexbox();
     @include flex-direction(column);
     @include align-items(center);
-    background: $white;
     padding: 30px;
     &__img {
         text-align: center;

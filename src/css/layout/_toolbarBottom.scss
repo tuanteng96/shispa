@@ -7,6 +7,24 @@
     right: 0;
     height: 48px;
     justify-content: space-between;
+    -webkit-box-shadow: 0 0 40px 0 rgba(82, 63, 105, 0.1);
+    box-shadow: 0 0 40px 0 rgba(82, 63, 105, 0.1);
+    &.total-3 {
+        .page-toolbar-bottom__link {
+            width: calc(100%/3);
+            i {
+                font-size: 24px;
+            }
+        }
+    }
+    &.total-2 {
+        .page-toolbar-bottom__link {
+            width: calc(100%/2);
+            i {
+                font-size: 24px;
+            }
+        }
+    }
     .page-toolbar-indicator {
         position: absolute;
         background-color: #f0f4f7;
@@ -64,9 +82,12 @@
                 color: $color-app;
                 font-size: 24px;
             }
+            span {
+                color: $color-app;
+            }
         }
         span {
-            font-size: 12px;
+            font-size: 11px;
         }
         &-inner {
             position: absolute;

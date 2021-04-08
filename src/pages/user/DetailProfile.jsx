@@ -16,11 +16,12 @@ import UserService from "../../service/user.service";
 import DatePicker from "react-mobile-datepicker";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { NAME_APP, VERSION_APP } from "../../constants/config";
 export default class extends React.Component {
   constructor() {
     super();
     this.state = {
-      memberInfo: [],
+      memberInfo: {},
       IDStockName: "",
       isOpen: false,
       isOpenStock: false,
@@ -34,11 +35,14 @@ export default class extends React.Component {
   getInfoMember = () => {
     const infoUser = getUser();
     if (!infoUser) return false;
-    const username = infoUser.MobilePhone;
+    const username = infoUser.MobilePhone
+      ? infoUser.MobilePhone
+      : infoUser.UserName;
     const password = getPassword();
     UserService.getInfo(username, password)
       .then((response) => {
-        const memberInfo = response.data.info;
+        const memberInfo = response.data;
+        console.log(memberInfo);
         this.setState({
           memberInfo: memberInfo,
         });
@@ -47,11 +51,19 @@ export default class extends React.Component {
   };
   signOut = () => {
     const $$this = this;
-    $$this.$f7.dialog.confirm("Bạn muống đăng xuất khỏi tài khoản ?", () => {
-      localStorage.clear();
-      app_request("unsubscribe", "");
-      $$this.$f7router.navigate("/");
-    });
+    $$this.$f7.dialog.confirm(
+      "Bạn muống đăng xuất khỏi tài khoản ?",
+      async () => {
+        f7.dialog.preloader(`Đăng xuất ...`);
+        app_request("unsubscribe", "");
+        const clearLocal = await localStorage.clear();
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        f7.dialog.close();
+        $$this.$f7router.navigate("/", {
+          reloadCurrent: true,
+        });
+      }
+    );
   };
 
   handleClickBirthday = () => {
@@ -113,8 +125,23 @@ export default class extends React.Component {
     }
   };
 
+  checkMember = (memberInfo) => {
+    if (!memberInfo) return false;
+    if (memberInfo.acc_type === "M") {
+      return memberInfo.acc_group > 0
+        ? memberInfo.MemberGroups[0].Title
+        : "Thành viên";
+    }
+    if (memberInfo.ID === 1) {
+      return "ADMIN";
+    }
+    if (memberInfo.acc_type === "U" && memberInfo.GroupTitles.length > 0) {
+      return memberInfo.GroupTitles.join(", ");
+    }
+  };
+
   render() {
-    const member = this.state.memberInfo && this.state.memberInfo;
+    const { memberInfo } = this.state;
     const IDStockName = this.state.IDStockName;
     const dateConfig = {
       date: {
@@ -162,7 +189,7 @@ export default class extends React.Component {
               <div className="name">Avatar</div>
               <div className="content">
                 <div className="content-avatar">
-                  <img src={checkAvt(member.Photo)} />
+                  <img src={checkAvt(memberInfo && memberInfo.Photo)} />
                 </div>
                 <i className="las la-angle-right"></i>
               </div>
@@ -170,14 +197,16 @@ export default class extends React.Component {
             <div className="page-detail-profile__item">
               <div className="name">Họ và tên</div>
               <div className="content">
-                <div className="content-text">{member.FullName}</div>
+                <div className="content-text">
+                  {memberInfo && memberInfo.FullName}
+                </div>
               </div>
             </div>
             <div className="page-detail-profile__item">
               <div className="name">Giới tính</div>
               <div className="content">
                 <div className="content-text">
-                  {member.Gender === 1 ? "Nam" : "Nữ"}
+                  {memberInfo && memberInfo.Gender === 1 ? "Nam" : "Nữ"}
                 </div>
               </div>
             </div>
@@ -188,7 +217,9 @@ export default class extends React.Component {
               <div className="name">Ngày sinh</div>
               <div className="content">
                 <div className="content-text">
-                  {formatDateBirday(member.BirthDate)}
+                  {memberInfo && memberInfo.BirthDate
+                    ? formatDateBirday(memberInfo.BirthDate)
+                    : "Chưa cập nhập"}
                   <DatePicker
                     theme="ios"
                     cancelText="Đóng"
@@ -196,7 +227,11 @@ export default class extends React.Component {
                     headerFormat="DD/MM/YYYY"
                     showCaption={true}
                     dateConfig={dateConfig}
-                    value={new Date(member.BirthDate)}
+                    value={
+                      memberInfo && memberInfo.BirthDate
+                        ? new Date(memberInfo.BirthDate)
+                        : new Date()
+                    }
                     isOpen={this.state.isOpen}
                     onSelect={this.handleSelectBirthday}
                     onCancel={this.handleCancelBirthday}
@@ -208,7 +243,11 @@ export default class extends React.Component {
             <div className="page-detail-profile__item">
               <div className="name">Số điện thoại</div>
               <div className="content">
-                <div className="content-text">{member.MobilePhone}</div>
+                <div className="content-text">
+                  {memberInfo && memberInfo.MobilePhone
+                    ? memberInfo.MobilePhone || "Chưa cập nhập"
+                    : memberInfo.Phone || "Chưa cập nhập"}
+                </div>
               </div>
             </div>
             <div
@@ -217,14 +256,22 @@ export default class extends React.Component {
             >
               <div className="name">Email</div>
               <div className="content">
-                <div className="content-text">{member.Email}</div>
+                <div className="content-text">
+                  {memberInfo && memberInfo.Email
+                    ? memberInfo.Email
+                    : "Chưa cập nhập"}
+                </div>
                 <i className="las la-angle-right"></i>
               </div>
             </div>
             <div className="page-detail-profile__item">
               <div className="name">Địa chỉ</div>
               <div className="content">
-                <div className="content-text">{member.HomeAddress}</div>
+                <div className="content-text">
+                  {memberInfo && memberInfo.HomeAddress
+                    ? memberInfo.HomeAddress
+                    : "Chưa cập nhập"}
+                </div>
               </div>
             </div>
             <div
@@ -237,6 +284,14 @@ export default class extends React.Component {
                   {IDStockName === "" ? "Chưa chọn điểm" : IDStockName}
                 </div>
                 <i className="las la-angle-right"></i>
+              </div>
+            </div>
+            <div className="page-detail-profile__item">
+              <div className="name">Nhóm</div>
+              <div className="content">
+                <div className="content-text">
+                  {this.checkMember(memberInfo && memberInfo)}
+                </div>
               </div>
             </div>
             <div
@@ -252,7 +307,7 @@ export default class extends React.Component {
             <div className="line-logout"></div>
           </div>
           <div className="page-detail-profile__footer">
-            <div className="text">Shi Spa 1.0.0</div>
+            <div className="text">{`${NAME_APP} ${VERSION_APP}`}</div>
             <button
               type="button"
               className="btn-signout"
