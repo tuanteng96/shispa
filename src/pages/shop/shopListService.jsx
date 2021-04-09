@@ -94,156 +94,194 @@ export default class extends React.Component {
     }
 
     render() {
-        const arrService = this.state.arrService;
-        const arrSearch = this.state.arrSearch;
-        const isSearch = this.state.isSearch;
+        const { arrService, arrSearch, isSearch } = this.state;
         return (
-            <Page
-                name="shop-List"
-                onPageBeforeOut={this.onPageBeforeOut.bind(this)}
-                onPageBeforeRemove={this.onPageBeforeRemove.bind(this)}
-                ptr
-                onPtrRefresh={this.loadMore.bind(this)}>
-                <Navbar>
-                    <div className="page-navbar">
-                        <div className="page-navbar__back">
-                            <Link onClick={() => this.$f7router.back()}>
-                                <i className="las la-angle-left"></i>
-                            </Link>
-                        </div>
-                        <div className="page-navbar__title">
-                            <span className="title">
-                                {this.state.titlePage}
-                            </span>
-                        </div>
-                        <div className="page-navbar__noti">
-                            <Link searchbarEnable=".searchbar-product">
-                                <i className="las la-search"></i>
-                            </Link>
-                        </div>
-                    </div>
-                    <Searchbar
-                        className="searchbar-product"
-                        expandable
-                        customSearch={true}
-                        disableButton={!this.$theme.aurora}
-                        placeholder="Dịch vụ cần tìm ?"
-                        disableButtonText="Đóng"
-                        clearButton={true}
-                        onChange={this.handleInputSearch}
-                        onClickClear={() => this.hideSearch()}
-                        onClickDisable={() => this.hideSearch()}
-                    ></Searchbar>
-                </Navbar>
-                <div className="page-render">
-                    <div className="page-shop">
-                        <div className="page-shop__service">
-                            {
-                                isSearch === false ? (
-                                    <div className="page-shop__service-list">
-                                        {
-                                            arrService && arrService.map((item) =>
-                                                (<div className="page-shop__service-item" key={item.ID}>
-                                                    <div className="page-shop__service-item service-about">
-                                                        <div className="service-about__img">
-                                                            <img
-                                                                src={SERVER_APP + "/Upload/image/" + item.Thumbnail}
-                                                                alt={item.Title}
-                                                            />
-                                                        </div>
-                                                        {
-                                                            item.Desc !== "" ? (
-                                                                <div className="service-about__content">
-                                                                    <div className="service-about__content-text">
-                                                                        {ReactHtmlParser(item.Desc)}
-                                                                    </div>
-                                                                    <Button fill sheetOpen=".demo-sheet" className="show-more">Xem tất cả <i className="las la-angle-right"></i></Button>
-                                                                    <Sheet
-                                                                        className="demo-sheet"
-                                                                        style={{ height: 'auto', '--f7-sheet-bg-color': '#fff' }}
-                                                                        swipeToClose
-                                                                        backdrop
-                                                                    >
-                                                                        <PageContent>
-                                                                            <div className="page-shop__service-detail">
-                                                                                <h4>{item.Title}</h4>
-                                                                                <div className="content">
-                                                                                    {ReactHtmlParser(item.Desc)}
-                                                                                </div>
-                                                                            </div>
-                                                                        </PageContent>
-                                                                    </Sheet>
-                                                                </div>
-                                                            ) : ("")
-                                                        }
-                                                        <div className="service-about__list">
-                                                            <ul>
-                                                                {item.lst.map((subitem) => (
-                                                                    <li key={subitem.ID}>
-                                                                        <Link href={"/shop/detail/" + item.ID}>
-                                                                            <div className="title">
-                                                                                {subitem.Title}
-                                                                            </div>
-                                                                            <div className={
-                                                                                "price " +
-                                                                                (checkSale(
-                                                                                    subitem.SaleBegin,
-                                                                                    subitem.SaleEnd
-                                                                                ) === true ? 'sale' : '')
-                                                                            }>
-                                                                                <span className="price-to">{formatPriceVietnamese(subitem.PriceProduct)}<b>đ</b></span>
-                                                                                <span className="price-sale">{formatPriceVietnamese(subitem.PriceSale)}<b>đ</b></span>
-                                                                            </div>
-                                                                        </Link>
-                                                                    </li>
-                                                                ))}
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>)
-                                            )
-                                        }
-                                    </div>
-                                ) : (
-                                        <div className="page-shop__service-list">
-                                            <div className="page-shop__service-item">
-                                                <div className="page-shop__service-item service-about">
-                                                    <div className="service-about__list">
-                                                        <ul>
-                                                            {arrSearch && arrSearch.map((item) => (
-                                                                <li key={item.id}>
-                                                                    <Link href={"/shop/detail/" + item.id}>
-                                                                        <div className="title">
-                                                                            {item.title}
-                                                                        </div>
-                                                                        <div className={
-                                                                            "price " +
-                                                                            (checkSale(
-                                                                                item.source.SaleBegin,
-                                                                                item.source.SaleEnd
-                                                                            ) === true ? 'sale' : '')
-                                                                        }>
-                                                                            <span className="price-to">{formatPriceVietnamese(item.source.PriceProduct)}<b>đ</b></span>
-                                                                            <span className="price-sale">{formatPriceVietnamese(item.source.PriceSale)}<b>đ</b></span>
-                                                                        </div>
-                                                                    </Link>
-                                                                </li>
-                                                            ))}
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )
-                            }
-                        </div>
-                    </div>
+          <Page
+            name="shop-List"
+            onPageBeforeOut={this.onPageBeforeOut.bind(this)}
+            onPageBeforeRemove={this.onPageBeforeRemove.bind(this)}
+            ptr
+            onPtrRefresh={this.loadMore.bind(this)}
+          >
+            <Navbar>
+              <div className="page-navbar">
+                <div className="page-navbar__back">
+                  <Link onClick={() => this.$f7router.back()}>
+                    <i className="las la-angle-left"></i>
+                  </Link>
                 </div>
-                <Toolbar tabbar position="bottom">
-                    <ToolBarBottom />
-                </Toolbar>
-            </Page>
-        )
+                <div className="page-navbar__title">
+                  <span className="title">{this.state.titlePage}</span>
+                </div>
+                <div className="page-navbar__noti">
+                  <Link searchbarEnable=".searchbar-product">
+                    <i className="las la-search"></i>
+                  </Link>
+                </div>
+              </div>
+              <Searchbar
+                className="searchbar-product"
+                expandable
+                customSearch={true}
+                disableButton={!this.$theme.aurora}
+                placeholder="Dịch vụ cần tìm ?"
+                disableButtonText="Đóng"
+                clearButton={true}
+                onChange={this.handleInputSearch}
+                onClickClear={() => this.hideSearch()}
+                onClickDisable={() => this.hideSearch()}
+              ></Searchbar>
+            </Navbar>
+            <div className="page-render">
+              <div className="page-shop">
+                <div className="page-shop__service">
+                  {isSearch === false ? (
+                    <div className="page-shop__service-list">
+                      {arrService &&
+                        arrService.map((item) => (
+                          <div
+                            className="page-shop__service-item"
+                            key={item.ID}
+                          >
+                            <div className="page-shop__service-item service-about">
+                              <div className="service-about__img">
+                                <img
+                                  src={
+                                    SERVER_APP +
+                                    "/Upload/image/" +
+                                    item.Thumbnail
+                                  }
+                                  alt={item.Title}
+                                />
+                              </div>
+                              {item.Desc !== "" ? (
+                                <div className="service-about__content">
+                                  <div className="service-about__content-text">
+                                    {ReactHtmlParser(item.Desc)}
+                                  </div>
+                                  <Button
+                                    fill
+                                    sheetOpen=".demo-sheet"
+                                    className="show-more"
+                                  >
+                                    Xem tất cả{" "}
+                                    <i className="las la-angle-right"></i>
+                                  </Button>
+                                  <Sheet
+                                    className="demo-sheet"
+                                    style={{
+                                      height: "auto",
+                                      "--f7-sheet-bg-color": "#fff",
+                                    }}
+                                    swipeToClose
+                                    backdrop
+                                  >
+                                    <PageContent>
+                                      <div className="page-shop__service-detail">
+                                        <h4>{item.Title}</h4>
+                                        <div className="content">
+                                          {ReactHtmlParser(item.Desc)}
+                                        </div>
+                                      </div>
+                                    </PageContent>
+                                  </Sheet>
+                                </div>
+                              ) : (
+                                ""
+                              )}
+                              <div className="service-about__list">
+                                <ul>
+                                  {item.lst.map((subitem) => (
+                                    <li key={subitem.ID}>
+                                      <Link href={"/shop/detail/" + subitem.ID}>
+                                        <div className="title">
+                                          {subitem.Title}
+                                        </div>
+                                        <div
+                                          className={
+                                            "price " +
+                                            (checkSale(
+                                              subitem.SaleBegin,
+                                              subitem.SaleEnd
+                                            ) === true
+                                              ? "sale"
+                                              : "")
+                                          }
+                                        >
+                                          <span className="price-to">
+                                            {formatPriceVietnamese(
+                                              subitem.PriceProduct
+                                            )}
+                                            <b>đ</b>
+                                          </span>
+                                          <span className="price-sale">
+                                            {formatPriceVietnamese(
+                                              subitem.PriceSale
+                                            )}
+                                            <b>đ</b>
+                                          </span>
+                                        </div>
+                                      </Link>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  ) : (
+                    <div className="page-shop__service-list">
+                      <div className="page-shop__service-item">
+                        <div className="page-shop__service-item service-about">
+                          <div className="service-about__list">
+                            <ul>
+                              {arrSearch &&
+                                arrSearch.map((item) => (
+                                  <li key={item.id}>
+                                    <Link href={"/shop/detail/" + item.id}>
+                                      <div className="title">{item.title}</div>
+                                      <div
+                                        className={
+                                          "price " +
+                                          (checkSale(
+                                            item.source.SaleBegin,
+                                            item.source.SaleEnd
+                                          ) === true
+                                            ? "sale"
+                                            : "")
+                                        }
+                                      >
+                                        <span className="price-to">
+                                          {formatPriceVietnamese(
+                                            item.source.PriceProduct
+                                          )}
+                                          <b>đ</b>
+                                        </span>
+                                        <span className="price-sale">
+                                          {formatPriceVietnamese(
+                                            item.source.PriceSale
+                                          )}
+                                          <b>đ</b>
+                                        </span>
+                                      </div>
+                                    </Link>
+                                  </li>
+                                ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            <Toolbar tabbar position="bottom">
+              <ToolBarBottom />
+            </Toolbar>
+          </Page>
+        );
     }
 
     onPageBeforeOut() {
