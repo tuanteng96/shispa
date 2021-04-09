@@ -124,64 +124,67 @@ export default class extends React.Component {
             </div>
           </div>
         </Navbar>
-        <div className="page-render no-bg p-0">
+        <div className="page-render page-render-pay no-bg p-0">
           <div className="page-pay no-bg">
-            <div className="page-pay__information">
-              <h4>
-                <FaShippingFast />
-                Địa chỉ nhận hàng
-              </h4>
-              <div className="item">
-                <span>{infoUser && infoUser.FullName}</span>
-                <span>
-                  (+84) {infoUser && infoUser.MobilePhone.substring(1)}
-                </span>
+            <div className="page-pay-1">
+              <div className="page-pay__information">
+                <h4>
+                  <FaShippingFast />
+                  Địa chỉ nhận hàng
+                </h4>
+                <div className="item">
+                  <span>{infoUser && infoUser.FullName}</span>
+                  <span>
+                    (+84) {infoUser && infoUser.MobilePhone.substring(1)}
+                  </span>
+                </div>
+                <div className="address">
+                  {infoUser && infoUser.HomeAddress !== ""
+                    ? infoUser.HomeAddress
+                    : "Bạn chưa nhập địa chỉ? Vui lòng cập nhật thông tin."}
+                </div>
+                <div className="line"></div>
               </div>
-              <div className="address">
-                {infoUser && infoUser.HomeAddress !== ""
-                  ? infoUser.HomeAddress
-                  : "Bạn chưa nhập địa chỉ? Vui lòng cập nhật thông tin."}
-              </div>
-              <div className="line"></div>
-            </div>
-            <h6 className="page-pay__title">Đơn hàng của bạn</h6>
-            {isLoading && <SkeletonPayInfo />}
-            {!isLoading && (
-              <div className="page-pay__list page-pay__list2">
-                {items.length > 0
-                  ? items &&
-                    items.map((item, index) => (
-                      <div className="page-pay__list-item" key={index}>
-                        <div className="image">
-                          <img
-                            src={SERVER_APP + "/Upload/image/" + item.ProdThumb}
-                            alt={item.ProdTitle}
-                          />
-                        </div>
-                        <div className="info">
-                          <h3>{item.ProdTitle}</h3>
-                          <div className="info-price">
-                            <p className="price-p">
-                              {formatPriceVietnamese(item.ToPay)}
-                              <b>₫</b>
-                            </p>
-                            <p className="qty">x{item.Qty}</p>
+              <h6 className="page-pay__title">Đơn hàng của bạn</h6>
+              {isLoading && <SkeletonPayInfo />}
+              {!isLoading && (
+                <div className="page-pay__list page-pay__list2">
+                  {items.length > 0
+                    ? items &&
+                      items.map((item, index) => (
+                        <div className="page-pay__list-item" key={index}>
+                          <div className="image">
+                            <img
+                              src={
+                                SERVER_APP + "/Upload/image/" + item.ProdThumb
+                              }
+                              alt={item.ProdTitle}
+                            />
+                          </div>
+                          <div className="info">
+                            <h3>{item.ProdTitle}</h3>
+                            <div className="info-price">
+                              <p className="price-p">
+                                {formatPriceVietnamese(item.ToPay)}
+                                <b>₫</b>
+                              </p>
+                              <p className="qty">x{item.Qty}</p>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))
-                  : "Chưa có đơn hàng"}
-              </div>
-            )}
-
-            <div className="page-pay__note">
-              <div className="item">
-                <p>Ghi chú :</p>
-                <textarea
-                  placeholder="Để lại lưu ý ..."
-                  type="text"
-                  onChange={(e) => this.handleNote(e.target.value)}
-                ></textarea>
+                      ))
+                    : "Chưa có đơn hàng"}
+                </div>
+              )}
+              <div className="page-pay__note">
+                <div className="item">
+                  <p>Ghi chú :</p>
+                  <textarea
+                    placeholder="Để lại lưu ý ..."
+                    type="text"
+                    onChange={(e) => this.handleNote(e.target.value)}
+                  ></textarea>
+                </div>
               </div>
             </div>
             <div className="page-pay__total">

@@ -29,7 +29,7 @@ export default class extends React.Component {
 
         UserService.getInfo(username,password)
             .then(response => {
-                const memberInfo = response.data.info;
+                const memberInfo = response.data;
                 this.setState({
                     memberInfo: memberInfo
                 })

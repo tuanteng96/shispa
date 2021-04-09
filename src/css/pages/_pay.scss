@@ -1,6 +1,16 @@
+.page-render-pay {
+    height: 100%;
+    overflow: hidden;
+}
+
 .page-pay {
-    height: calc(100vh - 134px - (calc(var(--f7-page-navbar-offset, 0px) + var(--f7-page-toolbar-top-offset, 0px) + var(--f7-page-subnavbar-offset, 0px) + var(--f7-page-searchbar-offset, 0px) + var(--f7-page-content-extra-padding-top, 0px))));
-    overflow-y: auto;
+    height: 100%;
+    position: relative;
+    &-1 {
+        height: calc(100% - 136px);
+        box-sizing: border-box;
+        overflow: auto;
+    }
     &__information {
         margin-bottom: .5rem;
         padding: 15px 12px;
@@ -83,6 +93,9 @@
             margin-bottom: 20px;
             &:first-child {
                 margin-top: 12px;
+            }
+            &:last-child {
+                margin-bottom: 15px;
             }
             .delete {
                 width: 30px;
@@ -185,7 +198,7 @@
     &__total {
         box-shadow: 0 0 6px 0 rgba(0, 0, 0, .09);
         background: $white;
-        position: absolute;
+        position: relative;
         width: 100%;
         bottom: 0;
         left: 0;

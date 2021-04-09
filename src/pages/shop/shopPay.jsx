@@ -340,6 +340,9 @@ export default class extends React.Component {
           setTimeout(() => {
             self.$f7.preloader.hide();
             this.$f7router.navigate("/pay-info/");
+            this.setState({
+              isBtn: false,
+            });
           }, 1000);
         }
       })
@@ -422,7 +425,7 @@ export default class extends React.Component {
                 onClick={() => this.saveChangeCount()}
               >
                 <Link noLinkClass>
-                  <i className="fal fa-check"></i>
+                  <i className="lar la-check-circle"></i>
                 </Link>
               </div>
             ) : (
@@ -432,11 +435,11 @@ export default class extends React.Component {
             )}
           </div>
         </Navbar>
-        <div className="page-render no-bg p-0">
+        <div className="page-render page-render-pay no-bg p-0">
           <div className="page-pay no-bg">
             {isLoading && <SkeletonPay />}
             {!isLoading && (
-              <div className="page-pay__list">
+              <div className="page-pay__list page-pay-1">
                 {items.length > 0
                   ? items &&
                     items.map((item, index) => (
