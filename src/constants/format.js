@@ -1,6 +1,7 @@
 import { SERVER_APP } from "../constants/config";
 import imgAvatarNull from "./../assets/images/avatar-null.png";
 import imgAvatarNull2 from "./../assets/images/avatar-null2.png";
+import imgNoProduct from "./../assets/images/no-product.png";
 import moment from 'moment';
 import 'moment/locale/vi';
 moment.locale('vi');

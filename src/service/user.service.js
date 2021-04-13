@@ -74,6 +74,9 @@ class UserService {
     getOrderAll(memberID) {
         return http.get(`/services/preview.aspx?cmd=search_order&key=kh:${memberID}&getitems=1`);
     }
+    getOrderAll2(member) {
+        return http.get(`/app/index.aspx?cmd=orders&USN=${member.USN}&PWD=${member.PWD}&IsUser=0`)
+    }
     getConfig(name) {
         return http.get(`/api/v3/config?cmd=getnames&names=${name}`);
     }
