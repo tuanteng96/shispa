@@ -37,7 +37,6 @@ export default class extends React.Component {
             .catch(err => console.log(err));
         this.getBarCode(infoUser.ID);
         this.barCodePlay();
-
     }
     barCodePlay() {
         this.playBarCode = setInterval(this.setBarCode, 2*60*100);
@@ -80,6 +79,7 @@ export default class extends React.Component {
 
     render() {
         const member = this.state.memberInfo && this.state.memberInfo;
+        console.log(member);
         const code = this.state.code;
         return (
             <Page onPageBeforeOut={this.onPageBeforeOut.bind(this)} name="barcode" noNavbar noToolbar>

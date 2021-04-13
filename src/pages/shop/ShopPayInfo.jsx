@@ -1,7 +1,7 @@
 import React from "react";
 import { SERVER_APP } from "./../../constants/config";
 import { formatPriceVietnamese } from "../../constants/format";
-import { getUser } from "../../constants/user";
+import { getStockIDStorage, getUser } from "../../constants/user";
 import ShopDataService from "./../../service/shop.service";
 import { Page, Link, Navbar } from "framework7-react";
 import NotificationIcon from "../../components/NotificationIcon";
@@ -61,6 +61,7 @@ export default class extends React.Component {
   handleSubmit = () => {
     const { order, noteOrder } = this.state;
     const infoUser = getUser();
+    const stockid = getStockIDStorage();
     const self = this;
     this.setState({
       isBtn: true,
@@ -72,6 +73,7 @@ export default class extends React.Component {
         Status: "user_sent",
         SenderOther: noteOrder,
       },
+      forceStockID: stockid,
     };
     self.$f7.preloader.show();
     ShopDataService.getUpdateOrder(data)

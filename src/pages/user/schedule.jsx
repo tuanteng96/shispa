@@ -246,6 +246,7 @@ export default class extends React.Component {
 
   controlsStep = () => {
     const { itemStepTime, isLoadingStep1, itemBooks } = this.state;
+    
     switch (this.state.activeStep) {
       case 0:
         return (
@@ -253,7 +254,11 @@ export default class extends React.Component {
             <button
               type="button"
               className={`btn-submit-order btn-submit-order ${
-                itemStepTime && !itemStepTime["time"] ? "btn-no-click" : ""
+                (itemStepTime && !itemStepTime["time"]) ||
+                (itemStepTime && isNaN(itemStepTime["stock"])) ||
+                !itemStepTime
+                  ? "btn-no-click"
+                  : ""
               } ${!itemStepTime && "btn-no-click"} ${
                 isLoadingStep1 && "loading"
               }`}

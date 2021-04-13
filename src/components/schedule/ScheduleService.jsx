@@ -49,7 +49,6 @@ export default class ScheduleService extends React.Component {
     return (
       <div className="page-schedule__box">
         <div className="service-me">
-          <h5>Thẻ dịch vụ của bạn</h5>
           <ServiceCartComponent
             handleMultiService={(item) => this.handleMultiService(item)}
             reset={resetStep1}

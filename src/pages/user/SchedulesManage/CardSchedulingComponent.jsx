@@ -21,11 +21,20 @@ export default class CardSchedulingComponent extends React.Component {
     super();
     this.state = {
       isLoading: true,
+      isRefresh: false,
     };
   }
 
   componentDidMount() {
     this.getListBooks();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { isRefresh } = this.props;
+
+    if (prevProps.isRefresh !== isRefresh) {
+      this.getListBooks();
+    }
   }
 
   getListBooks = () => {
@@ -122,7 +131,7 @@ export default class CardSchedulingComponent extends React.Component {
                           </Row>
                         </div>
                         <div className="stock">
-                          Đặt lịch tại {subitem.stock.Title}
+                          Đặt lịch tại {subitem.stock && subitem.stock.Title}
                           <button
                             onClick={() => this.handleDelete(item)}
                             className="btn-close"
@@ -137,7 +146,11 @@ export default class CardSchedulingComponent extends React.Component {
             </div>
           ))}
 
-        {dataBooks && dataBooks.length === 0 ? <PageNoData text="Bạn chưa có thẻ đặt lịch" /> : ""}
+        {dataBooks && dataBooks.length === 0 ? (
+          <PageNoData text="Bạn chưa có thẻ đặt lịch" />
+        ) : (
+          ""
+        )}
       </div>
     );
   }

@@ -6,7 +6,7 @@ import {
 import { AiOutlineClose } from "react-icons/ai";
 
 import imgCoupon from "../../assets/images/coupon_bg.svg";
-import { getUser } from "../../constants/user";
+import { getStockIDStorage, getUser } from "../../constants/user";
 import UserService from "../../service/user.service";
 import ShopDataService from "./../../service/shop.service";
 import { Page, Link, Navbar, Popup } from "framework7-react";
@@ -315,6 +315,7 @@ export default class extends React.Component {
   };
 
   handlePay = () => {
+    const getStock = getStockIDStorage();
     const { editsOrder, deletedsOrder, WalletPaySuccess } = this.state;
     const infoUser = getUser();
     const data = {
@@ -328,6 +329,7 @@ export default class extends React.Component {
       payed: {
         membermoney: WalletPaySuccess,
       },
+      forceStockID: getStock,
     };
     this.setState({
       isBtn: true,

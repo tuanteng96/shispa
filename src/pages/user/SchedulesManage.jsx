@@ -20,18 +20,32 @@ export default class extends React.Component {
   constructor() {
     super();
     this.state = {
-      
+      isRefresh: false,
     };
   }
 
-  componentDidMount() {
-    
+  handleLoadRefresh = () => {
+
+  }
+
+  async loadRefresh(done) {
+    const { isRefresh } = this.state;
+    this.setState({
+      isRefresh: !isRefresh,
+    });
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    done();
   }
 
   render() {
-    
+    const { isRefresh } = this.state;
     return (
-      <Page name="schedule-manage">
+      <Page
+        name="schedule-manage"
+        onPtrRefresh={this.loadRefresh.bind(this)}
+        ptr
+        infiniteDistance={50}
+      >
         <Navbar>
           <div className="page-navbar">
             <div className="page-navbar__back">
@@ -61,10 +75,10 @@ export default class extends React.Component {
           <div className="chedule-manage">
             <Tabs>
               <Tab id="bookcard" tabActive>
-                <CardSchedulingComponent />
+                <CardSchedulingComponent isRefresh={isRefresh} />
               </Tab>
               <Tab id="booksupport">
-                <AdvisorySchedulesComponent />
+                <AdvisorySchedulesComponent isRefresh={isRefresh} />
               </Tab>
             </Tabs>
           </div>

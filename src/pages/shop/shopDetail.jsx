@@ -5,7 +5,7 @@ import {
   checkSale,
   percentagesSale,
 } from "../../constants/format";
-import { getUser, setViewed } from "../../constants/user";
+import { getUser, setViewed, getStockIDStorage } from "../../constants/user";
 import ShopDataService from "./../../service/shop.service";
 import CartToolBar from "../../components/CartToolBar";
 import {
@@ -19,6 +19,8 @@ import {
 import ReactHtmlParser from "react-html-parser";
 import { toast } from "react-toastify";
 import SkeletonThumbnail from "./components/Detail/SkeletonThumbnail";
+import SelectStock from "../../components/SelectStock";
+import { Suspense } from "react";
 
 export default class extends React.Component {
   constructor() {
@@ -34,7 +36,8 @@ export default class extends React.Component {
       quantity: 1,
       isLoading: false,
       isProbably: false,
-      statusLoading: true
+      statusLoading: true,
+      isOpenStock: false,
     };
   }
 
@@ -60,7 +63,7 @@ export default class extends React.Component {
           arrRelProds: resultRes.product.RelProds,
           photos: ptotosNew,
           arrOptions: resultRes.options,
-          statusLoading: false
+          statusLoading: false,
         });
 
         setViewed(resultRes.product);
@@ -74,11 +77,19 @@ export default class extends React.Component {
     this.getDetialProduct();
   }
   openSheet = () => {
-    const { arrProduct } = this.state;
-    this.setState({
-      sheetOpened: true,
-      arrProductCopy: arrProduct,
-    });
+    const { arrProduct, isOpenStock } = this.state;
+    const getStock = getStockIDStorage();
+    if (!getStock) {
+      this.setState({
+        isOpenStock: !isOpenStock,
+      });
+    }
+    else {
+      this.setState({
+        sheetOpened: true,
+        arrProductCopy: arrProduct,
+      });
+    }
   };
   closeSheet = () => {
     const { arrProductCopy } = this.state;
@@ -158,9 +169,13 @@ export default class extends React.Component {
   orderSubmit = () => {
     //code here
     const infoUser = getUser();
+    const getStock = getStockIDStorage();
+
     if (!infoUser) {
       this.$f7router.navigate("/login/");
-    } else {
+      return false;
+    }
+    else {
       const { arrProduct, quantity } = this.state;
       const self = this;
       self.$f7.preloader.show();
@@ -184,6 +199,7 @@ export default class extends React.Component {
                 : arrProduct.PriceSale,
           },
         ],
+        forceStockID: getStock,
       };
 
       ShopDataService.getUpdateOrder(data)
@@ -202,6 +218,12 @@ export default class extends React.Component {
           console.log(e);
         });
     }
+  };
+
+  nameStock = (name) => {
+    this.setState({
+      stockName: name,
+    });
   };
 
   handleProbably = (item) => {
@@ -298,7 +320,7 @@ export default class extends React.Component {
   };
 
   classifiHTML = () => {
-    const arrOptions = this.state; 
+    const arrOptions = this.state;
     return (
       <div className="sheet-pay-body__size">
         <h4>Phân loại</h4>
@@ -318,7 +340,7 @@ export default class extends React.Component {
         </ul>
       </div>
     );
-  }
+  };
 
   htmlSize = (arrOptions) => {
     if (arrOptions.length > 0) {
@@ -365,6 +387,7 @@ export default class extends React.Component {
       isLoading,
       isProbably,
       statusLoading,
+      isOpenStock,
     } = this.state;
     return (
       <Page
@@ -519,7 +542,7 @@ export default class extends React.Component {
                 </div>
               </div>
               <div className="sheet-pay-body">
-                {arrOptions.length > 0 ? this.classifiHTML : ("")}
+                {arrOptions.length > 0 ? this.classifiHTML : ""}
                 <div className="sheet-pay-body__qty">
                   <h4>Số lượng</h4>
                   <div className="qty-form">
@@ -621,190 +644,15 @@ export default class extends React.Component {
             </div>
           </div>
         </Toolbar>
+
+        <Suspense fallback={<div>Loading...</div>}>
+          <SelectStock
+            isOpenStock={isOpenStock}
+            nameStock={(name) => this.nameStock(name)}
+          />
+        </Suspense>
+
       </Page>
     );
   }
 }
-
-// export default class extends React.Component {
-//   constructor() {
-//     super();
-//     this.state = {
-//       arrDetail: [],
-//       photos: [],
-//       iBtnLoading: false,
-//     };
-//   }
-//   componentDidMount() {
-//     this.getDetailProduct();
-//   }
-//   getDetailProduct = () => {
-//     const cateID = this.$f7route.params.cateId;
-//     ShopDataService.getDetail(cateID)
-//       .then((response) => {
-//         const arrDetail = response.data.data;
-//         const photos = arrDetail.photos;
-//         const ptotosNew = [];
-//         for (let photo in photos) {
-//           var itemPhoho = {};
-//           itemPhoho.url = SERVER_APP + "/Upload/image/" + photos[photo].Value;
-//           itemPhoho.caption = photos[photo].Title;
-//           ptotosNew.push(itemPhoho);
-//         }
-//         this.setState({
-//           arrDetail: arrDetail,
-//           photos: ptotosNew,
-//         });
-//       })
-//       .catch((e) => {
-//         console.log(e);
-//       });
-//   };
-//   submitOrder = () => {
-//     const infoMember = getUser();
-//     if (!infoMember) {
-//       this.$f7.views.main.router.navigate(`/login/`);
-//     } else {
-//       this.setState({
-//         iBtnLoading: true,
-//       });
-//     }
-//   };
-
-//   render() {
-//     const productItem = this.state.arrDetail;
-//     const { photos, iBtnLoading } = this.state;
-//     return (
-//       <Page name="shop-detail">
-//         <Navbar>
-//           <div className="page-navbar">
-//             <div className="page-navbar__back">
-//               <Link onClick={() => this.$f7router.back()}>
-//                 <i className="las la-angle-left"></i>
-//               </Link>
-//             </div>
-//             <div className="page-navbar__title">
-//               <span className="title">{productItem.title}</span>
-//             </div>
-//             <div className="page-navbar__noti">
-//               <Link>
-//                 <i className="las la-bell"></i>
-//               </Link>
-//             </div>
-//           </div>
-//         </Navbar>
-//         <PhotoBrowser
-//           photos={this.state.photos}
-//           theme="dark"
-//           popupCloseLinkText="Đóng"
-//           navbarOfText="/"
-//           ref={(el) => {
-//             this.standaloneDark = el;
-//           }}
-//         />
-//         {typeof productItem !== "undefined" &&
-//         Object.keys(productItem).length !== 0 ? (
-//           <div className="page-render no-bg p-0">
-//             <div className="page-shop no-bg">
-//               <div className="page-shop__detail">
-//                 <div className="page-shop__detail-img">
-//                   <img
-//                     onClick={() => this.standaloneDark.open()}
-//                     src={
-//                       SERVER_APP + "/Upload/image/" + productItem.prod.Thumbnail
-//                     }
-//                     alt={productItem.title}
-//                   />
-//                   <div className="count">1/{photos && photos.length}</div>
-//                 </div>
-//                 <div
-//                   className={
-//                     "page-shop__detail-list " +
-//                     (checkSale(
-//                       productItem.prod.SaleBegin,
-//                       productItem.prod.SaleEnd
-//                     ) === true
-//                       ? "sale"
-//                       : "")
-//                   }
-//                 >
-//                   <ul>
-//                     <li>
-//                       <div className="title">Mã sản phẩm</div>
-//                       <div className="text">{productItem.prod.DynamicID}</div>
-//                     </li>
-//                     <li className="product">
-//                       <div className="title">
-//                         Giá{" "}
-//                         {checkSale(
-//                           productItem.prod.SaleBegin,
-//                           productItem.prod.SaleEnd
-//                         ) === true
-//                           ? "Gốc"
-//                           : ""}
-//                       </div>
-//                       <div className="text">
-//                         {formatPriceVietnamese(productItem.price)}
-//                         <b>₫</b>
-//                       </div>
-//                     </li>
-//                     <li className="product-sale">
-//                       <div className="title">
-//                         Giảm{" "}
-//                         <div className="badges badges-danger">
-//                           {percentagesSale(
-//                             productItem.price,
-//                             productItem.pricesale
-//                           )}
-//                           %
-//                         </div>
-//                       </div>
-//                       <div className="text">
-//                         {formatPriceVietnamese(productItem.pricesale)}
-//                         <b>₫</b>
-//                       </div>
-//                     </li>
-//                     {productItem.prod.Desc !== "" &&
-//                     productItem.prod.Detail !== "" ? (
-//                       <li className="content">
-//                         <div className="content-post">
-//                           {ReactHtmlParser(productItem.prod.Desc)}
-//                           {ReactHtmlParser(productItem.prod.Detail)}
-//                         </div>
-//                       </li>
-//                     ) : (
-//                       ""
-//                     )}
-//                   </ul>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         ) : (
-//           "<div>Không tìm thấy sản phẩm</div>"
-//         )}
-//         <Toolbar tabbar position="bottom">
-//           <div className="page-toolbar">
-//             <div className="page-toolbar__order">
-//               <button
-//                 className={
-//                   "page-btn-order btn-submit-order " +
-//                   (iBtnLoading ? "loading" : "")
-//                 }
-//                 onClick={this.submitOrder}
-//               >
-//                 <span>Đặt hàng</span>
-//                 <div className="loading-icon">
-//                   <div className="loading-icon__item item-1"></div>
-//                   <div className="loading-icon__item item-2"></div>
-//                   <div className="loading-icon__item item-3"></div>
-//                   <div className="loading-icon__item item-4"></div>
-//                 </div>
-//               </button>
-//             </div>
-//           </div>
-//         </Toolbar>
-//       </Page>
-//     );
-//   }
-// }

@@ -3,7 +3,7 @@ import { Page, Link, Toolbar, Navbar } from "framework7-react";
 import ToolBarBottom from "../../components/ToolBarBottom";
 import UserService from "../../service/user.service";
 import NotificationIcon from "../../components/NotificationIcon";
-import { getUser } from "../../constants/user";
+import { getUser, getPassword } from "../../constants/user";
 import PageNoData from "../../components/PageNoData";
 import {
   formatPriceVietnamese,
@@ -26,13 +26,21 @@ export default class extends React.Component {
 
   getOrderAll = () => {
     const infoUser = getUser();
-    if (!infoUser) {
+    const PWD = getPassword();
+    console.log(PWD);
+    if (!infoUser || !PWD) {
       this.$f7router.navigate("/login/");
       return;
     }
-    UserService.getOrderAll(infoUser.ID)
+    const member = {
+      USN: infoUser.MobilePhone,
+      PWD: PWD,
+    };
+    UserService.getOrderAll2(member)
       .then((response) => {
-        const data = response.data.data;
+        
+        const data = response.data;
+        console.log(data);
         this.setState({
           arrOder: data,
         });
@@ -51,11 +59,20 @@ export default class extends React.Component {
     }
   }
 
+  async loadRefresh(done) {
+    await this.getOrderAll();
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    done();
+  }
+
   render() {
     const { arrOder } = this.state;
-    console.log(arrOder);
     return (
-      <Page>
+      <Page
+        onPtrRefresh={this.loadRefresh.bind(this)}
+        ptr
+        infiniteDistance={50}
+      >
         <Navbar>
           <div className="page-navbar">
             <div className="page-navbar__back">

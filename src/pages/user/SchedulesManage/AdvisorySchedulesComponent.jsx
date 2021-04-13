@@ -22,11 +22,20 @@ export default class AdvisorySchedulesComponent extends React.Component {
     super();
     this.state = {
       isLoading: true,
+      isRefresh: false,
     };
   }
 
   componentDidMount() {
     this.getListBooks();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { isRefresh } = this.props;
+
+    if (prevProps.isRefresh !== isRefresh) {
+      this.getListBooks();
+    }
   }
 
   getListBooks = () => {
