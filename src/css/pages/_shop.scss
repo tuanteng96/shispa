@@ -148,6 +148,7 @@
                 @include cut-text;
                 margin: 0;
                 padding: 0 10px;
+                min-height: 19px;
             }
         }
         &-price {
@@ -251,6 +252,8 @@
                         }
                         .content-post {
                             padding: 10px;
+                            box-sizing: border-box;
+                            width: 100%;
                             p {
                                 margin-bottom: 10px;
                                 margin-top: 0;

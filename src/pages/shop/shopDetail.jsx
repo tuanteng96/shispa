@@ -21,6 +21,7 @@ import { toast } from "react-toastify";
 import SkeletonThumbnail from "./components/Detail/SkeletonThumbnail";
 import SelectStock from "../../components/SelectStock";
 import { Suspense } from "react";
+import Skeleton from "react-loading-skeleton";
 
 export default class extends React.Component {
   constructor() {
@@ -58,13 +59,15 @@ export default class extends React.Component {
           ptotosNew.push(itemPhoho);
         }
 
-        this.setState({
-          arrProduct: resultRes.product,
-          arrRelProds: resultRes.product.RelProds,
-          photos: ptotosNew,
-          arrOptions: resultRes.options,
-          statusLoading: false,
-        });
+        setTimeout(() => {
+          this.setState({
+            arrProduct: resultRes.product,
+            arrRelProds: resultRes.product.RelProds,
+            photos: ptotosNew,
+            arrOptions: resultRes.options,
+            statusLoading: false,
+          });
+        }, 5000);
 
         setViewed(resultRes.product);
       })
@@ -83,8 +86,7 @@ export default class extends React.Component {
       this.setState({
         isOpenStock: !isOpenStock,
       });
-    }
-    else {
+    } else {
       this.setState({
         sheetOpened: true,
         arrProductCopy: arrProduct,
@@ -174,8 +176,7 @@ export default class extends React.Component {
     if (!infoUser) {
       this.$f7router.navigate("/login/");
       return false;
-    }
-    else {
+    } else {
       const { arrProduct, quantity } = this.state;
       const self = this;
       self.$f7.preloader.show();
@@ -486,10 +487,20 @@ export default class extends React.Component {
                   {arrProduct.Desc !== "" && arrProduct.Detail !== "" ? (
                     <li className="content">
                       <div className="content-title">Chi tiết sản phẩm</div>
-                      <div className="content-post">
-                        {ReactHtmlParser(arrProduct.Desc)}
-                        {ReactHtmlParser(arrProduct.Detail)}
-                      </div>
+                      {statusLoading ? (
+                        <>
+                          <div className="content-post">
+                            <Skeleton count={5} />
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="content-post">
+                            {ReactHtmlParser(arrProduct.Desc)}
+                            {ReactHtmlParser(arrProduct.Detail)}
+                          </div>
+                        </>
+                      )}
                     </li>
                   ) : (
                     ""
@@ -651,7 +662,6 @@ export default class extends React.Component {
             nameStock={(name) => this.nameStock(name)}
           />
         </Suspense>
-
       </Page>
     );
   }

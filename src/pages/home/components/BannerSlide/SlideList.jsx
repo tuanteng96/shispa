@@ -38,9 +38,8 @@ export default class SlideList extends React.Component {
       speed: 500,
       slidesToShow: 1,
       slidesToScroll: 1,
-      autoplay: false,
-      speed: 2000,
-      autoplaySpeed: 4000,
+      autoplay: true,
+      autoplaySpeed: 3000,
     };
     return (
       <div className="body-slide">
@@ -53,8 +52,10 @@ export default class SlideList extends React.Component {
               return (
                 <Link
                   noLinkClass
-                  href={item.Link}
-                  className="body-slide__item"
+                  href={item.Link ? item.Link : `/adv/${item.ID}`}
+                  className={`body-slide__item ${
+                    item.Follow === "true" ? "external" : ""
+                  }`}
                   key={item.ID}
                 >
                   <img

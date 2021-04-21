@@ -1,4 +1,5 @@
 import HomeIndex from "../pages/home/homeIndex";
+import SlideDetail from "../pages/home/components/BannerSlide/SlideDetail";
 
 import NewsPage from '../pages/news/news.jsx';
 import NewsListPage from '../pages/news/newsList.jsx';
@@ -88,6 +89,13 @@ var routes = [{
     {
         path: '/news/',
         asyncComponent: () => HomeIndex,
+        options: {
+            transition: 'f7-cover',
+        }
+    },
+    {
+        path: '/adv/:id',
+        asyncComponent: () => SlideDetail,
         options: {
             transition: 'f7-cover',
         }

@@ -19,6 +19,9 @@ class ShopDataService {
     getDetailFull(id) {
         return http.get(`/api/v3/prod?cmd=getid&id=${id}`);
     }
+    getServiceParent(id, stock) {
+        return http.get(`/api/v3/app2?get=sv&cid=${id}&stockid=${stock}`);
+    }
     getServiceParentID(id, stockid) {
         return http.get(`/app/index.aspx?cmd=service_parentid&id=${id}&stockid=${stockid}`);
     }

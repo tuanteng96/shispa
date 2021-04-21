@@ -83,7 +83,7 @@ export default class extends React.Component {
     this.setState({
       getVieweds: getViewed(),
     });
-  }
+  };
 
   removeHistory = async (item) => {
     await removeKeySearch(item);
@@ -103,7 +103,22 @@ export default class extends React.Component {
     this.setState({
       isLoading: false,
     });
-  }
+  };
+
+  handleSubmit = async (event) => {
+    event.preventDefault();
+    const { valueSearch } = this.state;
+    if (!valueSearch) return;
+    this.setState({
+      isSearch: true,
+      isLoading: true,
+    });
+    await this.getkeySeach(valueSearch);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    this.setState({
+      isLoading: false,
+    });
+  };
 
   render() {
     const {
@@ -122,7 +137,7 @@ export default class extends React.Component {
               <i className="las la-angle-left"></i>
             </Link>
             <div className="form-search">
-              <form>
+              <form onSubmit={this.handleSubmit}>
                 <input
                   type="search"
                   placeholder="Bạn muốn tìm ?"
@@ -182,7 +197,10 @@ export default class extends React.Component {
                             </div>
                             <div className="title">{item.Title}</div>
                           </Link>
-                          <div className="closes" onClick={() => this.removeViewted(item)}>
+                          <div
+                            className="closes"
+                            onClick={() => this.removeViewted(item)}
+                          >
                             <GrClose />
                           </div>
                         </li>

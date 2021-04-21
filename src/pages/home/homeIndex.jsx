@@ -112,7 +112,7 @@ export default class extends React.Component {
   }
 
   render() {
-    const { isOpenStock, stockName } = this.state;
+    const { isOpenStock, stockName, isGetStock } = this.state;
 
     return (
       <Page noNavbar name="news" onPageBeforeIn={() => this.onPageBeforeIn()}>
@@ -199,7 +199,7 @@ export default class extends React.Component {
             nameStock={(name) => this.nameStock(name)}
           />
           <ModalReviews />
-          <QuickAction />
+          <QuickAction stockName={stockName} />
         </Suspense>
       </Page>
     );
