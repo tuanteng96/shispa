@@ -4,7 +4,7 @@ import UserService from "../../service/user.service";
 import { getStockIDStorage, getStockNameStorage } from "../../constants/user";
 import IconLocation from "../../assets/images/location1.svg";
 import SkeletonStock from "./SkeletonStock";
-import Slider from "react-slick";
+import Carousel from "nuka-carousel";
 import DatePicker from "react-mobile-datepicker";
 import moment from "moment";
 import "moment/locale/vi";
@@ -22,6 +22,7 @@ export default class ScheduleSpa extends React.Component {
       isLoadingStock: true,
       isActive: 0,
       isOpen: false,
+      indexCurrent: 7,
     };
   }
 
@@ -70,15 +71,36 @@ export default class ScheduleSpa extends React.Component {
     const gettoday = moment();
     const arrListDate = [];
     const arrListTime = [];
+    let slideActive = -1;
+    var min = -1;
+    var now = new Date().getTime();
     for (let day = 0; day <= 815; day += 15) {
       var time = moment("2020-11-05T07:30:00").add(day, "m").format("LT");
       var timeFull = moment("2020-11-05T07:30:00").add(day, "m").format("LTS");
+
+      var d = new Date();
+      d.setHours(7);
+      d.setMinutes(30);
+      d.setSeconds(0);
+
+      d.setMinutes(d.getMinutes() + day);
+
+      var tick = Math.abs(now - d.getTime());
+      min = min == -1 ? tick : min > tick ? tick : min;
+
       var item = {
         time: time,
         fullTime: timeFull,
+        tick: tick,
       };
       arrListTime.push(item);
     }
+    arrListTime.forEach(function (x, index) {
+      if (x.tick === min) {
+        x.active = true;
+        slideActive = Math.floor(index / 4);
+      }
+    });
 
     for (let day = 0; day <= 1; day++) {
       switch (day) {
@@ -124,8 +146,10 @@ export default class ScheduleSpa extends React.Component {
           break;
       }
     }
+
     this.setState({
       arrListDate: arrListDate,
+      indexCurrent: slideActive,
     });
   };
 
@@ -248,21 +272,17 @@ export default class ScheduleSpa extends React.Component {
       isActive: "other",
       timeSelected: "",
     });
-  }
+  };
 
   handleSelectDate = async (date) => {
-    const {
-      CurrentStockID,
-      CurrentStockName,
-      StockSelected,
-    } = this.state;
+    const { CurrentStockID, CurrentStockName, StockSelected } = this.state;
 
     const itemBookNew = {};
-    itemBookNew.time = moment(date).format("LT");;
+    itemBookNew.time = moment(date).format("LT");
     itemBookNew.stock = StockSelected
       ? StockSelected
       : parseInt(CurrentStockID);
-    itemBookNew.date = moment(date).format("L"); ;
+    itemBookNew.date = moment(date).format("L");
     itemBookNew.nameStock = CurrentStockName;
 
     this.setState(
@@ -284,14 +304,12 @@ export default class ScheduleSpa extends React.Component {
         isOpen: false,
         isActive: "other",
       });
-    }
-    else {
+    } else {
       this.setState({
         isOpen: false,
         isActive: 0,
       });
     }
-    
   };
 
   render() {
@@ -304,16 +322,30 @@ export default class ScheduleSpa extends React.Component {
       isActive,
       isOpen,
       otherBook,
+      indexCurrent,
     } = this.state;
+    const settingsIndex = {
+      //wrapAround: true,
+      speed: 500,
+      slidesToShow: 4,
+      slidesToScroll: 4,
+      slideIndex: indexCurrent,
+      cellSpacing: 10,
+      renderBottomCenterControls: false,
+      renderCenterLeftControls: null,
+      renderCenterRightControls: null,
+      afterChange: (current) => {},
+      beforeChange: (current, next) => {},
+    };
     const settings = {
-      className: "slider variable-width",
-      dots: false,
-      arrows: false,
-      infinite: true,
-      centerMode: false,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      variableWidth: true,
+      //wrapAround: true,
+      speed: 500,
+      slidesToShow: 4,
+      slidesToScroll: 4,
+      cellSpacing: 10,
+      renderBottomCenterControls: false,
+      renderCenterLeftControls: null,
+      renderCenterRightControls: null,
       afterChange: (current) => {},
       beforeChange: (current, next) => {},
     };
@@ -474,11 +506,14 @@ export default class ScheduleSpa extends React.Component {
                   tabActive={isActive === index ? true : false}
                 >
                   <div className="page-schedule__time-list">
-                    <Slider {...settings}>
+                    <Carousel
+                      {...(index === 0 ? settingsIndex : settings)}
+                      className={index === 0 ? "slide-time-first" : ""}
+                    >
                       {this.group(item.arrtime, 4).map((children, k) => (
                         <div
                           className="group-time"
-                          style={this.handStyle()}
+                          //style={this.handStyle()}
                           key={k}
                         >
                           {children.map((sub, i) => (
@@ -501,7 +536,7 @@ export default class ScheduleSpa extends React.Component {
                           ))}
                         </div>
                       ))}
-                    </Slider>
+                    </Carousel>
                   </div>
                 </Tab>
               ))}

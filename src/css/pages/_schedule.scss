@@ -241,7 +241,7 @@
             font-size: 15px;
         }
         &-list {
-            margin-top: 8px;
+            margin-top: 25px;
             .slick-track {
                 margin: 0 -4px;
                 box-sizing: border-box;
@@ -250,11 +250,10 @@
                 }
             }
             .group-time {
-                padding: 0 4px;
                 box-sizing: border-box;
                 outline: none !important;
                 &__item {
-                    margin-top: 8px;
+                    margin-bottom: 8px;
                     text-align: center;
                     position: relative;
                     background: $white;

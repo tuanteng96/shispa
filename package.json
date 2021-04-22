@@ -34,6 +34,7 @@
         "lodash": "^4.17.20",
         "moment": "^2.29.1",
         "node-sass": "^4.14.1",
+        "nuka-carousel": "^4.7.7",
         "prop-types": "^15.7.2",
         "qrcode.react": "^1.0.0",
         "react": "^16.13.1",
