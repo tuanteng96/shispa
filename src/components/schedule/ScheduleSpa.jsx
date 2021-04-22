@@ -343,7 +343,7 @@ export default class ScheduleSpa extends React.Component {
       slidesToShow: 4,
       slidesToScroll: 4,
       cellSpacing: 10,
-      renderBottomCenterControls: false,
+      renderBottomCenterControls: () => false,
       renderCenterLeftControls: null,
       renderCenterRightControls: null,
       afterChange: (current) => {},
