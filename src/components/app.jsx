@@ -109,6 +109,7 @@ export default class extends React.Component {
     
     var $$ = this.Dom7;
     $$("#preload").remove();
+    $$("#preload-logo").remove();
 
     window.APP_READY = true;
     // const self = this;
