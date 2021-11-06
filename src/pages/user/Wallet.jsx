@@ -226,7 +226,7 @@ export default class extends React.Component {
                             {formatPriceVietnamese(item.Value)}
                           </div>
                           <div className="price-time">
-                            {moment(item.CreateDate).fromNow()}
+                            {moment(item.CreateDate).format("HH:mm DD-MM-YYYY")}
                           </div>
                         </div>
                         <div className="note">{item.TypeText}</div>
